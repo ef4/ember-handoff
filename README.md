@@ -1,26 +1,6 @@
-# Ember-handoff
+# Ember Handoff
 
-This README outlines the details of collaborating on this Ember addon.
+This is an work-in-progress Ember Engine that lets you `mount` an existing server-rendered website inside an Ember application and begin enhancing it with Ember-defined behaviors.
 
-## Installation
+Much like [pjax](https://github.com/defunkt/jquery-pjax), [TurboLinks](http://geekmonkey.org/2012/09/introducing-turbolinks-for-rails-4-0/), or [refreshless](https://www.drupal.org/project/refreshless), it inverts the normal control of web page loading and fetches HTML via the [fetch](https://fetch.spec.whatwg.org/) API. This can be good for performance. But more importantly, it creates a graceful upgrade path for enhancing an existing website with advanced user experienced that are only possible when you have a robust in-browser application.
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
-
-## Running
-
-* `ember server`
-* Visit your app at http://localhost:4200.
-
-## Running Tests
-
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
