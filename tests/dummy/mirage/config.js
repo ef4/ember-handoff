@@ -43,4 +43,13 @@ export default function() {
     </html>
   `);
 
+  getHTTP('/component-example', `
+    <html>
+      <body>
+       <div data-ember-component="x-example"></div>
+      </body>
+    </html>
+  `);
+
+
 }
