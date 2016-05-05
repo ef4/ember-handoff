@@ -14,7 +14,7 @@ export default function() {
         <title>Sample Index</title>
       </head>
       <body>
-        This is sample index. <a href="one">Go to one.</a> <a href="two">Go to two.</a>
+        <h1>This is sample index.</h1> <a href="one">Go to one.</a> <a href="two">Go to two.</a>
       </body>
     </html>
   `);
@@ -25,7 +25,9 @@ export default function() {
         <title>Sample One</title>
       </head>
       <body>
-        This is sample one. <a href="../">Go to index.</a> <a href="two">Go to two.</a>
+        <h1>This is sample one.</h1> <a href="../">Go to index.</a> <a href="two">Go to two.</a>
+        <a href="${window.location.origin}/two">absoluteLink2</a>
+        <a href="http://google.com">externalLink</a>
       </body>
     </html>
   `);
@@ -36,7 +38,7 @@ export default function() {
         <title>Sample Two</title>
       </head>
       <body>
-        This is sample two. <a href="../">Go to index.</a> <a href="one">Go to one.</a>
+        <h1>This is sample two.</h1> <a href="../">Go to index.</a> <a href="one">Go to one.</a>
       </body>
     </html>
   `);

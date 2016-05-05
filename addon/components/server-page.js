@@ -67,13 +67,18 @@ export default Component.extend({
   },
 
   maybeTransition(href) {
-    let url = new URL(href, window.location.href);
     let router = this.get('routing');
-    let rootUrl = router.get('rootUrl');
+    let rootURL = router.get('rootURL');
+    let here = new URL(
+      rootURL.replace(/\/$/, '') + router.currentURL(),
+      window.location.origin
+    );
+    let destination = new URL(href, here);
+
+
     // Ensure that we only try to handle links that fall within the site.
-    if (url.origin === window.location.origin && url.pathname.indexOf(rootUrl) === 0) {
-      let localPath = url.pathname.replace(rootUrl, '/');
-      let { routeName, params } = router.recognize(localPath);
+    if (destination.origin === here.origin && destination.pathname.indexOf(rootURL) === 0) {
+      let { routeName, params } = router.recognize(destination.pathname);
       router.transitionTo(routeName, ...params);
       return true;
     }

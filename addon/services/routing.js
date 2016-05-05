@@ -33,6 +33,9 @@ export default Service.extend({
     return { routeName, params };
   },
 
-  rootUrl: alias('_routing.router.rootURL')
+  rootURL: alias('_routing.router.rootURL'),
 
+  currentURL() {
+    return this.get('_routing.router.location').getURL();
+  }
 });
