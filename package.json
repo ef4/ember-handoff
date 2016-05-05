@@ -1,7 +1,7 @@
 {
   "name": "ember-handoff",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Engine for mounting server-rendered web pages.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,11 +11,11 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "github.com/ef4/ember-handoff",
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Edward Faulkner <ef@alum.mit.edu>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
