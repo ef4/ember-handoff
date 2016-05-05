@@ -1,11 +1,2 @@
 {{!-- Our component manually inserts server-generated DOM into this element --}}
 <div class="server-content"></div>
-
-{{#if showingOverlay}}
-  {{#each embeddedComponents as |c|}}
-    {{#ember-wormhole to=c.target}}
-      {{component c.name serverArgs=c.serverArgs}}
-    {{/ember-wormhole}}
-  {{/each}}
-  {{yield}}
-{{/if}}

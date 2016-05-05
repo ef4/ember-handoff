@@ -1,0 +1,5 @@
+{{#each handoff.embeddedComponents as |c|}}
+  {{#ember-wormhole to=c.target}}
+    {{component c.name serverArgs=c.serverArgs}}
+  {{/ember-wormhole}}
+{{/each}}

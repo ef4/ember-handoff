@@ -8,7 +8,7 @@ const Eng = Engine.extend({
   Resolver,
   dependencies: {
     services: [
-      'handoff-settings'
+      'handoff'
     ]
   }
 });

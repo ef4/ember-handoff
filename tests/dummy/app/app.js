@@ -16,7 +16,7 @@ App = Ember.Application.extend({
     emberHandoff: {
       dependencies: {
         services: [
-          'handoff-settings'
+          'handoff'
         ]
       }
     }

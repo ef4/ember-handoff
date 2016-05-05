@@ -6,7 +6,7 @@ import inject from 'ember-service/inject';
 export default Component.extend({
   handoffState: inject(),
   routing: inject(),
-  handoffSettings: inject(),
+  handoff: inject(),
 
   didReceiveAttrs() {
     // If we have a new page model, we want to clear any overlaid
@@ -18,27 +18,23 @@ export default Component.extend({
   },
 
   didRender() {
-    let settings = this.get('handoffSettings');
+    let settings = this.get('handoff');
     let page = this.get('page');
     if (page !== this._lastPage) {
       this._lastPage = page;
       let elt = this.$('.server-content');
       if (!page.prerendered) {
         this.get('handoffState').clearPage();
-        if (settings.setPageTitle) {
-          settings.setPageTitle(page.get('title'));
-        }
+        settings.setPageTitle(page.get('title'));
       }
+      settings.injectComponents([]);
       elt.empty();
       this.appendPage(elt, this.get('page')).then(() => {
         // After the server-rendered page has been inserted, we
         // re-enable any overlaid content so that it can wormhole
         // itself into the server-rendered DOM.
-        this.set('embeddedComponents', findEmbeddedComponents(page.prerendered ? $(document) : elt));
-        this.set('showingOverlay', true);
-        if (settings.appendedServerContent) {
-          settings.appendedServerContent(elt);
-        }
+        settings.injectComponents(findEmbeddedComponents(elt));
+        settings.appendedServerContent(elt);
       });
     }
   },
