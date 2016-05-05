@@ -1,9 +1,12 @@
-import Ember from 'ember';
+import Component from 'ember-component';
 import RSVP from 'rsvp';
 import $ from 'jquery';
+import inject from 'ember-service/inject';
 
-export default Ember.Component.extend({
-  handoff: Ember.inject.service(),
+export default Component.extend({
+  handoffState: inject(),
+  routing: inject(),
+  handoffSettings: inject(),
 
   didReceiveAttrs() {
     // If we have a new page model, we want to clear any overlaid
@@ -15,12 +18,16 @@ export default Ember.Component.extend({
   },
 
   didRender() {
+    let settings = this.get('handoffSettings');
     let page = this.get('page');
     if (page !== this._lastPage) {
       this._lastPage = page;
       let elt = this.$('.server-content');
       if (!page.prerendered) {
-        this.get('handoff').clearPage();
+        this.get('handoffState').clearPage();
+        if (settings.setPageTitle) {
+          settings.setPageTitle(page.get('title'));
+        }
       }
       elt.empty();
       this.appendPage(elt, this.get('page')).then(() => {
@@ -29,7 +36,9 @@ export default Ember.Component.extend({
         // itself into the server-rendered DOM.
         this.set('embeddedComponents', findEmbeddedComponents(page.prerendered ? $(document) : elt));
         this.set('showingOverlay', true);
-        this.sendAction("appendedServerContent");
+        if (settings.appendedServerContent) {
+          settings.appendedServerContent(elt);
+        }
       });
     }
   },
@@ -51,13 +60,25 @@ export default Ember.Component.extend({
 
   click(event) {
     let target = $(event.target).closest('a');
-    if (target.length > 0) {
-      if (this.get('handoff').maybeTransition(target.attr('href'))) {
-        event.preventDefault();
-        return false;
-      }
+    if (target.length > 0 && this.maybeTransition(target.attr('href'))) {
+      event.preventDefault();
+      return false;
+    }
+  },
+
+  maybeTransition(href) {
+    let serverUrl = new URL(this.get('handoffSettings.serverUrl'), window.location.href);
+    let url = new URL(href, serverUrl.href + this.get('page.id'));
+    // Ensure that we only try to handle links that fall within the site.
+    if (url.origin === serverUrl.origin && url.pathname.indexOf(serverUrl.pathname) === 0) {
+      let localPath = url.pathname.replace(serverUrl.pathname, '/');
+      let router = this.get('routing');
+      let { routeName, params } = router.recognize(localPath);
+      router.transitionTo(routeName, ...params);
+      return true;
     }
   }
+
 });
 
 // <link> tags do not reliably produce load events, particularly if

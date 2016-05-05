@@ -1,6 +1,5 @@
 import DS from 'ember-data';
 import Ember from 'ember';
-import ENV from '../config/environment';
 
 export default DS.Model.extend({
   htmlParser: Ember.inject.service(),
@@ -55,15 +54,6 @@ export default DS.Model.extend({
     }
   })
 });
-
-// A server page's ID is its path relative to the site's base URL. It
-// always begins with a '/'.
-export function idFromUrl(href) {
-  return new URL(href, window.location.href).pathname.replace(ENV.baseUrl, '/');
-}
-export function urlFromId(id) {
-  return new URL(window.location.href).origin + ENV.baseURL + id;
-}
 
 function importNode(node) {
   const DEEP_COPY = true;

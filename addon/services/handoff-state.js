@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ENV from '../config/environment';
 import { idFromUrl } from '../models/server-page';
 import $ from 'jquery';
 
