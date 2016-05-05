@@ -19,7 +19,7 @@ export default Service.extend({
   recognize(url) {
     let handlers = Array.from(this.get('_routing').router.router.recognizer.recognize(url));
     handlers.shift(); // application handler is always present and not interesting here
-    let routeName = handlers.map(h => h.handler).join('.');
+    let routeName = handlers[handlers.length-1].handler;
     let params = [];
     handlers.forEach(h => {
       // It's possible for routes to have more than one parameter, but

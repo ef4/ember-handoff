@@ -67,12 +67,12 @@ export default Component.extend({
   },
 
   maybeTransition(href) {
-    let serverUrl = new URL(this.get('handoffSettings.serverUrl'), window.location.href);
-    let url = new URL(href, serverUrl.href + this.get('page.id'));
+    let url = new URL(href, window.location.href);
+    let router = this.get('routing');
+    let rootUrl = router.get('rootUrl');
     // Ensure that we only try to handle links that fall within the site.
-    if (url.origin === serverUrl.origin && url.pathname.indexOf(serverUrl.pathname) === 0) {
-      let localPath = url.pathname.replace(serverUrl.pathname, '/');
-      let router = this.get('routing');
+    if (url.origin === window.location.origin && url.pathname.indexOf(rootUrl) === 0) {
+      let localPath = url.pathname.replace(rootUrl, '/');
       let { routeName, params } = router.recognize(localPath);
       router.transitionTo(routeName, ...params);
       return true;
