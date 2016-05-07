@@ -4,7 +4,6 @@ import $ from 'jquery';
 import inject from 'ember-service/inject';
 
 export default Component.extend({
-  handoffState: inject(),
   routing: inject(),
   handoff: inject(),
 
@@ -23,10 +22,7 @@ export default Component.extend({
     if (page !== this._lastPage) {
       this._lastPage = page;
       let elt = this.$('.server-content');
-      if (!page.prerendered) {
-        this.get('handoffState').clearPage();
-        settings.setPageTitle(page.get('title'));
-      }
+      settings.setPageTitle(page.get('title'));
       elt.empty();
       this.appendPage(elt, this.get('page')).then(() => {
         // After the server-rendered page has been inserted, we
@@ -39,9 +35,6 @@ export default Component.extend({
   },
 
   appendPage($elt, page) {
-    if (page.prerendered) {
-      return RSVP.resolve();
-    }
     return this.appendStyles($elt, page.get('styles')).finally(() => {
       page.get('content').forEach(node => $elt[0].appendChild(node));
     });
