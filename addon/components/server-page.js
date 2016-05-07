@@ -27,7 +27,6 @@ export default Component.extend({
         this.get('handoffState').clearPage();
         settings.setPageTitle(page.get('title'));
       }
-      settings.injectComponents([]);
       elt.empty();
       this.appendPage(elt, this.get('page')).then(() => {
         // After the server-rendered page has been inserted, we
