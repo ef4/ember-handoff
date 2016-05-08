@@ -12,7 +12,7 @@ export default Component.extend({
     // content when we rerender.
     let page = this.get('page');
     if (page !== this._lastPage) {
-      this.set('showingOverlay', false);
+      this.get('handoff').injectComponents([]);
     }
   },
 
