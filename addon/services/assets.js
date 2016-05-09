@@ -29,12 +29,19 @@ export default Service.extend({
     script = this.cloneOrImport(script);
 
     if (script.src && !this.scripts[script.src]) {
-      script = this.cloneOrImport(script);
+      let promise = scriptLoaded(script);
       script.async = false;
       document.querySelector('body').appendChild(script);
       this.scripts[script.src] = true;
       console.log('appended', script);
+      return promise;
+    } else {
+      return RSVP.resolve();
     }
+  },
+
+  applyScripts(scripts) {
+    return RSVP.allSettled(scripts.map(script => this.ensureScript(script)));
   },
 
   applyStyles(styles, element) {
@@ -81,6 +88,22 @@ function styleLoaded(element) {
       } else if (Array.from(document.styleSheets).find(s => s.ownerNode === element)) {
         clearInterval(interval);
         resolve();
+      }
+    }, 20);
+
+  });
+}
+
+function scriptLoaded(element) {
+  return new RSVP.Promise((resolve, reject) => {
+    $(element)
+      .on('load', resolve)
+      .on('error', reject);
+    let started = Date.now();
+    let interval = setInterval(() => {
+      if (Date.now() - started > 1000) {
+        clearInterval(interval);
+        reject();
       }
     }, 20);
 

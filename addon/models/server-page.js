@@ -78,13 +78,12 @@ export default DS.Model.extend({
     }
 
     let assets = this.get('assets');
-    this.get('pieces.scripts').forEach(script => {
-      assets.ensureScript(script);
-    });
+    let scriptsPromise = assets.applyScripts(this.get('pieces.scripts'));
     return assets.applyStyles(this.get('pieces.styles'), $element[0]).finally(() => {
       Array.from(this.get('pieces.body').childNodes).forEach(child => {
         $element[0].appendChild(assets.cloneOrImport(child));
       });
+      return scriptsPromise;
     });
   }
 });
