@@ -1,8 +1,10 @@
 import Component from 'ember-component';
 import $ from 'jquery';
 import inject from 'ember-service/inject';
+import layout from '../templates/components/server-page';
 
 export default Component.extend({
+  layout,
   routing: inject(),
   handoff: inject(),
 
