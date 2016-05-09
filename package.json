@@ -34,7 +34,7 @@
     "ember-cli-uglify": "^1.2.0",
     "ember-disable-prototype-extensions": "^1.1.0",
     "ember-disable-proxy-controllers": "^1.0.1",
-    "ember-engines": "github:dgeb/ember-engines#7e7d4bd3c5b15d3ec7180a1743257e66e328af10",
+    "ember-engines": "github:dgeb/ember-engines#de5d91d97df1191e11d832fed5d7c238a4c61789",
     "ember-export-application-global": "^1.0.4",
     "ember-load-initializers": "^0.5.0",
     "ember-resolver": "^2.0.3",

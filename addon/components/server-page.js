@@ -1,5 +1,4 @@
 import Component from 'ember-component';
-import RSVP from 'rsvp';
 import $ from 'jquery';
 import inject from 'ember-service/inject';
 
@@ -24,7 +23,7 @@ export default Component.extend({
       let elt = this.$('.server-content');
       settings.setPageTitle(page.get('title'));
       elt.empty();
-      this.appendPage(elt, this.get('page')).then(() => {
+      page.appendTo(elt).then(() => {
         // After the server-rendered page has been inserted, we
         // re-enable any overlaid content so that it can wormhole
         // itself into the server-rendered DOM.
@@ -32,18 +31,6 @@ export default Component.extend({
         settings.appendedServerContent(elt);
       });
     }
-  },
-
-  appendPage($elt, page) {
-    return this.appendStyles($elt, page.get('styles')).finally(() => {
-      page.get('content').forEach(node => $elt[0].appendChild(node));
-    });
-  },
-
-  appendStyles($element, styles) {
-    let stylesLoaded = styles.map(s => styleLoaded(s));
-    $element.append(styles);
-    return RSVP.allSettled(stylesLoaded);
   },
 
   click(event) {
@@ -73,30 +60,6 @@ export default Component.extend({
   }
 
 });
-
-// <link> tags do not reliably produce load events, particularly if
-// the CSS is already cached.
-function styleLoaded(element) {
-  if (element.tagName !== 'LINK') {
-    return RSVP.resolve();
-  }
-  return new RSVP.Promise((resolve, reject) => {
-    $(element)
-      .on('load', resolve)
-      .on('error', reject);
-    let started = Date.now();
-    let interval = setInterval(() => {
-      if (Date.now() - started > 1000) {
-        clearInterval(interval);
-        reject();
-      } else if (Array.from(document.styleSheets).find(s => s.ownerNode === element)) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, 20);
-
-  });
-}
 
 let counter = 0;
 function findEmbeddedComponents($context) {
