@@ -28,13 +28,13 @@ export default Component.extend({
         // re-enable any overlaid content so that it can wormhole
         // itself into the server-rendered DOM.
         settings.injectComponents(findEmbeddedComponents(elt));
-        settings.appendedServerContent(elt);
+        settings.appendedServerContent(page, elt);
       });
     }
   },
 
   click(event) {
-    let target = $(event.target).closest('a');
+    let target = $(event.target).closest('a[href]');
     if (target.length > 0 && this.maybeTransition(target.attr('href'))) {
       event.preventDefault();
       return false;
