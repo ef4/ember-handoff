@@ -73,7 +73,9 @@ export default DS.Model.extend({
 
   appendTo($element) {
     if (this.get('dom')) {
-      this.get('dom').forEach(node => $element[0].appendChild(node));
+      this.get('dom').forEach(
+        node => $element[0].appendChild(assets.cloneOrImport(node))
+      );
       return RSVP.resolve();
     }
 
