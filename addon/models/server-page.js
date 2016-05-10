@@ -69,20 +69,20 @@ export default DS.Model.extend({
   }),
 
   appendTo($element) {
+    let assets = this.get('assets');
+
     if (this.get('dom')) {
-      this.get('dom').forEach(
-        node => $element[0].appendChild(assets.cloneOrImport(node))
-      );
+      this.get('dom').forEach(node => {
+        node.remove();
+        $element[0].appendChild(assets.cloneOrImport(node));
+      });
       return RSVP.resolve();
     }
 
-    let assets = this.get('assets');
     let scriptsPromise = assets.applyScripts(this.get('pieces.scripts'));
-    return assets.applyStyles(this.get('pieces.styles'), $element[0]).finally(() => {
-      Array.from(this.get('pieces.body').childNodes).forEach(child => {
-        $element[0].appendChild(assets.cloneOrImport(child));
-      });
-      return scriptsPromise;
+    Array.from(this.get('pieces.body').childNodes).forEach(child => {
+      $element[0].appendChild(assets.cloneOrImport(child));
     });
+    return RSVP.allSettled([assets.applyStyles(this.get('pieces.styles'), $element[0]), scriptsPromise]);
   }
 });
