@@ -33,7 +33,6 @@ export default Service.extend({
       script.async = false;
       document.querySelector('body').appendChild(script);
       this.scripts[script.src] = true;
-      console.log('appended', script);
       return promise;
     } else {
       return RSVP.resolve();
@@ -47,12 +46,10 @@ export default Service.extend({
   applyStyles(styles, element) {
     return RSVP.allSettled(styles.map(style => {
       if (style.href && this.styles[style.media] && this.styles[style.media][style.href]) {
-        console.log("skipping style", style);
         return RSVP.resolve();
       }
       style = this.cloneOrImport(style);
       let promise = styleLoaded(style);
-      console.log('appended style', style);
       element.appendChild(style);
       return promise;
     }));
