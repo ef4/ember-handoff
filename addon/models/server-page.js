@@ -65,10 +65,7 @@ export default DS.Model.extend({
   }),
 
   bodyClasses: computed('document', function() {
-    let titleTag = this.get('document').querySelector('title');
-    if (titleTag) {
-      return titleTag.innerHTML;
-    }
+    return this.get('document').querySelector('body').className;
   }),
 
   appendTo($element) {
