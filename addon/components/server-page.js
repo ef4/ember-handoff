@@ -2,8 +2,9 @@ import Component from 'ember-component';
 import $ from 'jquery';
 import inject from 'ember-service/inject';
 import layout from '../templates/components/server-page';
+import { Pausable } from 'liquid-fire';
 
-export default Component.extend({
+export default Component.extend(Pausable, {
   layout,
   routing: inject(),
   handoff: inject(),
@@ -25,12 +26,14 @@ export default Component.extend({
       let elt = this.$('.server-content');
       settings.setPageTitle(page.get('title'));
       elt.empty();
+      this.pauseLiquidFire();
       page.appendTo(elt).then(() => {
         // After the server-rendered page has been inserted, we
         // re-enable any overlaid content so that it can wormhole
         // itself into the server-rendered DOM.
         settings.injectComponents(findEmbeddedComponents(elt));
         settings.appendedServerContent(page, elt);
+        this.resumeLiquidFire();
       });
     }
   },
